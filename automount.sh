@@ -5,7 +5,7 @@ set -euo pipefail
 # Originally from https://serverfault.com/a/767079
 
 # This script is called from our systemd unit file to mount or unmount
-# a USB drive.
+# an NVMe drive.
 
 usage()
 {
@@ -33,6 +33,14 @@ if ! flock -n 9; then
     # work (further start commands will be ignored after that)
     exit 1
 fi
+
+# Cleanup function for lock file
+cleanup_lock() {
+    rm -f "${MOUNT_LOCK}"
+}
+
+# Set trap to cleanup lock on script exit
+trap cleanup_lock EXIT
 
 # Wait N seconds for steam
 wait_steam()
@@ -105,8 +113,9 @@ do_mount()
           ;;
                 *)
                     echo "Error mounting ${DEVICE}: unsupported fstype: ${ID_FS_TYPE} - ${dev_json}"
-          rm "${MOUNT_LOCK}"
-          exit 2
+                    # Note: Lock cleanup previously done here with rm "${MOUNT_LOCK}"
+                    # Now handled automatically by trap cleanup_lock EXIT
+                    exit 2
                     ;;
         esac
 
@@ -166,7 +175,7 @@ do_mount()
     esac
 
     echo "**** Mounted ${DEVICE} at ${mount_point} ****"
-    
+
     if [ -f "${mount_point}/libraryfolder.vdf" ]; then
         send_steam_url "addlibraryfolder" "${mount_point}"
     else

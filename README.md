@@ -1,8 +1,6 @@
-# Steam-Deck.Mount-nvmes 3.7
+# Steam-Deck.Mount-External-Drive 3.5 (Supplemental Branch)
 
-A supplemental automount script for auto mounting addtional nvme drives on Steam OS machines.
-
-Script to Auto-Mount NTFS, BTRFS & exFat Additional NVMe Drives on systems running SteamOS with more than one nvme.
+A supplemental automount script for auto mounting additional NVMe drives on SteamOS machines.
 
 This script **supplements** Valve's built-in automount functionality for external drives by adding support for additional NVMe drives (nvme1n1-nvme9n1) that Valve's system doesn't handle. For external USB drives and SD cards, Valve's built-in system now handles ext4 drives natively.
 
@@ -12,6 +10,10 @@ NTFS & BTRFS Partitions containing a SteamLibrary at root level or in a folder n
 ### Why not drop me a sub over on my youtube channel ;) [Chinballs Gaming](https://www.youtube.com/chinballsTV?sub_confirmation=1)
 
 ### Also [Check out all these other things I'm making](https://github.com/scawp/Steam-Deck.Tools-List)
+
+## This Fork
+
+This is a supplemental branch maintained at [bcomnes/Steam-Deck.Mount-External-Drive](https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/tree/supplemental) that focuses on supplementing rather than overriding Valve's built-in automount functionality.
 
 # Steam OS 3.5+ Now supports Ext4 external Drives out the box!
 
@@ -31,7 +33,8 @@ This script adds support for:
 
 SteamOS's rule for external drives lives at `/usr/lib/udev/rules.d/99-steamos-automount.rules`. Rather than overriding this, we add a supplemental rule at `/etc/udev/rules.d/100-steamos-automount-supplement.rules` that runs after Valve's rules and only handles devices that Valve's system doesn't cover.
 
-Looking for the old code? see https://github.com/scawp/Steam-Deck.Mount-External-Drive/tree/pre-3.5
+Looking for the original code? see https://github.com/scawp/Steam-Deck.Mount-External-Drive
+Looking for the old pre-3.5 code? see https://github.com/scawp/Steam-Deck.Mount-External-Drive/tree/pre-3.5
 
 a `udev` rule is added to `/etc/udev/rules.d/100-steamos-automount-supplement.rules` which runs after Valve's built-in `/usr/lib/udev/rules.d/99-steamos-automount.rules`
 this then calls systemd `/etc/systemd/system/external-drive-mount@[nvme1n1-nvme9n1].service`
@@ -51,7 +54,7 @@ The Drive(s) will be Auto-Mounted to `/run/media/deck/[LABEL]` eg `/run/media/de
 
 ## Via Curl (One Line Install)
 
-In Konsole type `curl -sSL https://raw.githubusercontent.com/scawp/Steam-Deck.Mount-External-Drive/main/curl_install.sh | bash`
+In Konsole type `curl -sSL https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental/curl_install.sh | bash`
 
 a `sudo` password is required (run `passwd` if required first)
 
@@ -71,4 +74,4 @@ Note: This will only remove the supplemental additional NVMe drive mounting. Val
 
 # WORK IN PROGRESS!
 
-This will probably have bugs, so beware! log bugs under [issues](https://github.com/scawp/Steam-Deck.Mount-External-Drive/issues)!
+This will probably have bugs, so beware! log bugs under [issues](https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/issues)!
