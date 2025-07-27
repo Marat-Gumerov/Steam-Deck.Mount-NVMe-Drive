@@ -1,0 +1,27 @@
+# /etc/udev/rules.d/
+# sudo udevadm control --reload
+#
+# Supplemental automount rules that run AFTER Valve's 99-steamos-automount.rules
+# This file supplements Valve's built-in automount functionality rather than overriding it
+#
+# Valve's rules already handle:
+# - sd* devices (USB drives, SATA drives)
+# - mmcblk* devices (SD cards)
+#
+# We only handle devices that Valve's rules don't cover:
+
+# Commented out - these overlap with Valve's built-in sd* rules
+#KERNEL=="sd[a-z]|sd[a-z][0-9]", ACTION=="add", RUN+="/bin/systemctl start --no-block external-drive-mount@%k.service"
+#KERNEL=="sd[a-z]|sd[a-z][0-9]", ACTION=="remove", RUN+="/bin/systemctl stop --no-block external-drive-mount@%k.service"
+
+# Commented out - these overlap with Valve's built-in mmcblk* rules
+#KERNEL=="mmcblk0|mmcblk0p[0-9]", ACTION=="add", RUN+="/bin/systemctl start --no-block external-drive-mount@%k.service"
+#KERNEL=="mmcblk0|mmcblk0p[0-9]", ACTION=="remove", RUN+="/bin/systemctl stop --no-block external-drive-mount@%k.service"
+
+# Commented out - nvme0n1 is the primary Steam Deck internal drive. I dont need support for dual boot and maybe valve would add more partitions.
+#KERNEL=="nvme0n1p9|nvme0n1p1[0-9]", ACTION=="add", RUN+="/bin/systemctl start --no-block external-drive-mount@%k.service"
+#KERNEL=="nvme0n1p9|nvme0n1p1[0-9]", ACTION=="remove", RUN+="/bin/systemctl stop --no-block external-drive-mount@%k.service"
+
+# Additional NVMe drives (nvme1n1-nvme9n1) - for external NVMe drives or additional internal drives
+KERNEL=="nvme[1-9]n1|nvme[1-9]n1p[0-9]|nvme[1-9]n1p[0-9][0-9]", ACTION=="add", RUN+="/bin/systemctl start --no-block external-drive-mount@%k.service"
+KERNEL=="nvme[1-9]n1|nvme[1-9]n1p[0-9]|nvme[1-9]n1p[0-9][0-9]", ACTION=="remove", RUN+="/bin/systemctl stop --no-block external-drive-mount@%k.service"
