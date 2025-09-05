@@ -1,4 +1,4 @@
-# Steam Deck External NVMe Mount
+# Steam Deck NVMe Auto Mount
 
 A supplemental automount script for SteamOS that adds support for additional NVMe drives.
 
