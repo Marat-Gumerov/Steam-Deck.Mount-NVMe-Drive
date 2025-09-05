@@ -1,77 +1,96 @@
-# Steam-Deck.Mount-External-Drive 3.5 (Supplemental Branch)
+# Steam Deck External NVMe Mount
 
-A supplemental automount script for auto mounting additional NVMe drives on SteamOS machines.
+A supplemental automount script for SteamOS that adds support for additional NVMe drives.
 
-This script **supplements** Valve's built-in automount functionality for external drives by adding support for additional NVMe drives (nvme1n1-nvme9n1) that Valve's system doesn't handle. For external USB drives and SD cards, Valve's built-in system now handles ext4 drives natively.
+This script **supplements** Valve's built-in automount functionality by adding support for additional NVMe drives (nvme1n1-nvme9n1) that aren't handled by the default system. It's designed to work alongside Valve's existing automount system without interfering with it.
 
-NTFS & BTRFS Partitions containing a SteamLibrary at root level or in a folder named `SteamLibrary` will automatically be added to Steam, exFAT isn't supported as a SteamLibrary but will be Mounted for use with other Launchers or for Media/ROMs etc.
+NTFS & BTRFS partitions containing a SteamLibrary at root level or in a folder named `SteamLibrary` will automatically be added to Steam. exFAT drives will be mounted for use with other launchers or for media/ROMs but cannot be used as Steam libraries.
 
-# "This is cool! How can I thank you?"
-### Why not drop me a sub over on my youtube channel ;) [Chinballs Gaming](https://www.youtube.com/chinballsTV?sub_confirmation=1)
+## About This Project
 
-### Also [Check out all these other things I'm making](https://github.com/scawp/Steam-Deck.Tools-List)
+This project is a derivative of the original [Steam-Deck.Mount-External-Drive](https://github.com/scawp/Steam-Deck.Mount-External-Drive) by scawp, modified to work as a supplement to Valve's built-in automount system rather than replacing it and focusing on internal nVME drives only.
+This intended use of this was for a SteamMachine build: [bret.io/blog/2025/you-can-just-build-a-steam-machine/](https://bret.io/blog/2025/you-can-just-build-a-steam-machine/)
 
-## This Fork
+## SteamOS 3.5+ Built-in Support
 
-This is a supplemental branch maintained at [bcomnes/Steam-Deck.Mount-External-Drive](https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/tree/supplemental) that focuses on supplementing rather than overriding Valve's built-in automount functionality.
+SteamOS 3.5+ now includes native support for external drives with ext4 formatting. This script supplements that functionality by:
 
-# Steam OS 3.5+ Now supports Ext4 external Drives out the box!
+- Adding support for additional NVMe drives (nvme1n1-nvme9n1)
+- Supporting additional filesystem types (NTFS, BTRFS, exFAT)
+- Working alongside Valve's system without conflicts
 
-This script now **supplements** rather than **overrides** Valve's built-in automount system. It only handles internal NVMe partitions that Valve's system doesn't cover, making it perfect for Steam Machines running Steam OS with multiple nvmes.
+## How It Works
 
-# How does this work?
+This script supplements Valve's automount system located at `/usr/lib/hwsupport/steamos-automount.sh` by adding support for filesystem types and devices that Valve's system doesn't handle.
 
-This script supplements Valve's own Auto-Mount system (which lives on SteamOS at `/usr/lib/hwsupport/steamos-automount.sh`) by adding support for `ntfs`, `btrfs` & `exFAT` filesystems on internal NVMe partitions that Valve's system doesn't handle.
+**Valve's built-in system handles:**
+- External USB drives (`sd*` devices) with ext4 format
+- SD cards (`mmcblk*` devices) with ext4 format
 
-Valve's built-in system already handles:
-- External USB drives (`sd*` devices) - ext4 format
-- SD cards (`mmcblk*` devices) - ext4 format
+**This script adds support for:**
+- Additional NVMe drives (`nvme1n1-nvme9n1`) - useful for external NVMe enclosures or additional internal drives
+- NTFS, BTRFS, and exFAT filesystem support on these drives
 
-This script adds support for:
-- Additional NVMe drives (`nvme1n1-nvme9n1`) - useful for external NVMe drives or additional internal drives
-- Additional filesystem types (NTFS, BTRFS, exFAT) on these drives
+The script uses a udev rule at `/etc/udev/rules.d/100-steamos-automount-supplement.rules` that runs after Valve's built-in rules (`/usr/lib/udev/rules.d/99-steamos-automount.rules`) and only handles devices that Valve's system doesn't cover.
 
-SteamOS's rule for external drives lives at `/usr/lib/udev/rules.d/99-steamos-automount.rules`. Rather than overriding this, we add a supplemental rule at `/etc/udev/rules.d/100-steamos-automount-supplement.rules` that runs after Valve's rules and only handles devices that Valve's system doesn't cover.
+**System components:**
+- udev rule: `/etc/udev/rules.d/100-steamos-automount-supplement.rules`
+- systemd service: `/etc/systemd/system/external-drive-mount@.service`
+- mount script: `/home/deck/.local/share/scawp/SDMED/automount.sh`
 
-Looking for the original code? see https://github.com/scawp/Steam-Deck.Mount-External-Drive
-Looking for the old pre-3.5 code? see https://github.com/scawp/Steam-Deck.Mount-External-Drive/tree/pre-3.5
+No `/etc/fstab` entries are required, though existing fstab entries will continue to work.
 
-a `udev` rule is added to `/etc/udev/rules.d/100-steamos-automount-supplement.rules` which runs after Valve's built-in `/usr/lib/udev/rules.d/99-steamos-automount.rules`
-this then calls systemd `/etc/systemd/system/external-drive-mount@[nvme1n1-nvme9n1].service`
-that then runs `/home/deck/.local/share/scawp/SDMED/automount.sh` to Auto Mount any supported Additional NVMe Drives.
+## Installation
 
-`/etc/fstab` is not required for mounting in this way, (however if a Device has an `fstab` entry these scripts will still work)
+### One-line Install
 
-# Video Guide
+You'll need to enter your sudo password (run `passwd` first if you haven't set one).
 
-https://www.youtube.com/watch?v=Yglf1EKBv2A
+Open Konsole and run:
 
-# Operation
+```bash
+curl -sSL https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental/curl_install.sh | bash
+```
 
-The Drive(s) will be Auto-Mounted to `/run/media/deck/[LABEL]` eg `/run/media/deck/External-ssd/` if the Device has no `label` then the Devices `UUID` will be used eg `/run/media/deck/a12332-12bf-a33ab-eef/`
+### Persistence Across Updates
 
-# Installation
+The installer automatically configures your system to preserve the automount functionality across SteamOS updates using the atomic update configuration system.
 
-## Via Curl (One Line Install)
+## Operation
 
-In Konsole type `curl -sSL https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental/curl_install.sh | bash`
+Drives will be auto-mounted to `/run/media/deck/[LABEL]`. For example:
+- Labeled drive: `/run/media/deck/External-SSD/`
+- Unlabeled drive: `/run/media/deck/a12332-12bf-a33ab-eef/`
 
-a `sudo` password is required (run `passwd` if required first)
+## Uninstall
 
-# Uninstall
+### One-line Uninstall
 
-`sudo rm /etc/udev/rules.d/100-steamos-automount-supplement.rules`
+Open Konsole and run:
 
-`sudo rm /etc/systemd/system/external-drive-mount@.service`
+```bash
+curl -sSL https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental/curl_uninstall.sh | bash
+```
 
-`sudo rm -r /home/deck/.local/share/scawp/SDMED`
+### Manual Uninstall
 
-`sudo udevadm control --reload`
+Alternatively, you can manually remove the components:
 
-`sudo systemctl daemon-reload`
+```bash
+sudo rm /etc/udev/rules.d/100-steamos-automount-supplement.rules
+sudo rm /etc/systemd/system/external-drive-mount@.service
+sudo rm /etc/atomic-update.conf.d/external-drive-mount.conf
+sudo rm -r /home/deck/.local/share/scawp/SDMED
+sudo udevadm control --reload
+sudo systemctl daemon-reload
+```
 
-Note: This will only remove the supplemental additional NVMe drive mounting. Valve's built-in external drive mounting will continue to work normally.
+Note: This only removes the supplemental NVMe drive mounting. Valve's built-in external drive mounting will continue to work normally.
 
-# WORK IN PROGRESS!
+## Support
 
-This will probably have bugs, so beware! log bugs under [issues](https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/issues)!
+If you encounter issues, please report them in the [GitHub Issues](https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/issues) section.
+
+## License
+
+This project maintains the same DBAD (Don't Be A Dick) license as the original project.
