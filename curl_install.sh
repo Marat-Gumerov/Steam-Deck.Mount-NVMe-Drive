@@ -1,15 +1,15 @@
 #!/bin/bash
-#Steam Deck Mount External Drive by scawp (supplemental branch by bcomnes)
+#Steam Deck Mount External Drive by scawp (supplemental branch by bcomnes, fork by Marat-Gumerov)
 #License: DBAD: https://github.com/scawp/Steam-Deck.Mount-External-Drive/blob/main/LICENSE.md
-#Source: https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/tree/supplemental
+#Source: https://github.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/tree/marat
 # Use at own Risk!
 
-#curl -sSL https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental/curl_install.sh | bash
+#curl -sSL https://raw.githubusercontent.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/marat/curl_install.sh | bash
 
 #stop running script if anything returns an error (non-zero exit )
 set -e
 
-repo_url="https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental"
+repo_url="https://raw.githubusercontent.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/marat"
 repo_lib_dir="$repo_url/lib"
 
 tmp_dir="/tmp/scawp.SDMED.install"

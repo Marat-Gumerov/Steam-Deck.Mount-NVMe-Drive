@@ -6,6 +6,7 @@
 
 > Copyright (C) 2022 scawp (original work)
 > Copyright (C) 2024 bcomnes (derivative work)
+> Copyright (C) 2026 Marat-Gumerov (derivative work)
 
  Everyone is permitted to copy and distribute verbatim or modified copies of this license document.
 
@@ -34,4 +35,5 @@
 This project is a derivative work based on the original [Steam-Deck.Mount-External-Drive](https://github.com/scawp/Steam-Deck.Mount-External-Drive) by scawp. The derivative modifications focus on supplementing rather than overriding Valve's built-in automount system and adding persistence across SteamOS updates.
 
 Original work: https://github.com/scawp/Steam-Deck.Mount-External-Drive
-This derivative: https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/tree/supplemental
+bcomnes derivative: https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/tree/supplemental
+This derivative: https://github.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/tree/marat

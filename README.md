@@ -49,7 +49,7 @@ You'll need to enter your sudo password (run `passwd` first if you haven't set o
 Open Konsole and run:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental/curl_install.sh | bash
+curl -sSL https://raw.githubusercontent.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/marat/curl_install.sh | bash
 ```
 
 ### Persistence Across Updates
@@ -69,7 +69,7 @@ Drives will be auto-mounted to `/run/media/deck/[LABEL]`. For example:
 Open Konsole and run:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental/curl_uninstall.sh | bash
+curl -sSL https://raw.githubusercontent.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/marat/curl_uninstall.sh | bash
 ```
 
 ### Manual Uninstall
@@ -89,7 +89,7 @@ Note: This only removes the supplemental NVMe drive mounting. Valve's built-in e
 
 ## Support
 
-If you encounter issues, please report them in the [GitHub Issues](https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/issues) section.
+If you encounter issues, please report them in the [GitHub Issues](https://github.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/issues) section.
 
 ## License
 

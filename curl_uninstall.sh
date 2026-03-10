@@ -1,10 +1,10 @@
 #!/bin/bash
 #Steam Deck External NVMe Mount Uninstaller
-#License: DBAD: https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/blob/supplemental/LICENSE.md
-#Source: https://github.com/bcomnes/Steam-Deck.Mount-External-Drive/tree/supplemental
+#License: DBAD: https://github.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/blob/marat/LICENSE.md
+#Source: https://github.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/tree/marat
 # Use at own Risk!
 
-#curl -sSL https://raw.githubusercontent.com/bcomnes/Steam-Deck.Mount-External-Drive/supplemental/curl_uninstall.sh | bash
+#curl -sSL https://raw.githubusercontent.com/Marat-Gumerov/Steam-Deck.Mount-NVMe-Drive/marat/curl_uninstall.sh | bash
 
 #stop running script if anything returns an error (non-zero exit )
 set -e
