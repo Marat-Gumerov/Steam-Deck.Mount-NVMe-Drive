@@ -21,6 +21,17 @@ ACTION=$1
 DEVBASE=$2
 DEVICE="/dev/${DEVBASE}"
 
+# Skip devices that belong to the root drive (the OS drive).
+# NVMe device numbering can change between boots, so we detect the root drive dynamically
+# rather than assuming nvme0 is always the OS drive.
+ROOT_DEV=$(lsblk -ndo PKNAME "$(findmnt -n -o SOURCE /)")
+# Extract the NVMe controller+namespace prefix (e.g. nvme1n1p3 -> nvme1n1)
+DEV_DISK="${DEVBASE%%p[0-9]*}"
+if [[ "${DEV_DISK}" == "${ROOT_DEV}" ]]; then
+    echo "Skipping ${DEVBASE}: device is on root drive (${ROOT_DEV})"
+    exit 0
+fi
+
 # Shared between this and the auto-mount script to ensure we're not double-triggering nor automounting while formatting
 # or vice-versa.
 MOUNT_LOCK="/var/run/jupiter-automount-${DEVBASE//\/_}.lock"

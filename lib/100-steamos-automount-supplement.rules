@@ -22,6 +22,7 @@
 #KERNEL=="nvme0n1p9|nvme0n1p1[0-9]", ACTION=="add", RUN+="/bin/systemctl start --no-block external-drive-mount@%k.service"
 #KERNEL=="nvme0n1p9|nvme0n1p1[0-9]", ACTION=="remove", RUN+="/bin/systemctl stop --no-block external-drive-mount@%k.service"
 
-# Additional NVMe drives (nvme1n1-nvme9n1) - for external NVMe drives or additional internal drives
-KERNEL=="nvme[1-9]n1|nvme[1-9]n1p[0-9]|nvme[1-9]n1p[0-9][0-9]", ACTION=="add", RUN+="/bin/systemctl start --no-block external-drive-mount@%k.service"
-KERNEL=="nvme[1-9]n1|nvme[1-9]n1p[0-9]|nvme[1-9]n1p[0-9][0-9]", ACTION=="remove", RUN+="/bin/systemctl stop --no-block external-drive-mount@%k.service"
+# All NVMe drives (nvme0n1-nvme9n1) - automount.sh detects and skips the root drive at runtime,
+# since NVMe device numbering can change between boots
+KERNEL=="nvme[0-9]n1|nvme[0-9]n1p[0-9]|nvme[0-9]n1p[0-9][0-9]", ACTION=="add", RUN+="/bin/systemctl start --no-block external-drive-mount@%k.service"
+KERNEL=="nvme[0-9]n1|nvme[0-9]n1p[0-9]|nvme[0-9]n1p[0-9][0-9]", ACTION=="remove", RUN+="/bin/systemctl stop --no-block external-drive-mount@%k.service"
